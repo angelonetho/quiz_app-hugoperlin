@@ -13,30 +13,42 @@ enum StatusQuiz {
 class ControladorQuiz {
   // repositório responsável por fornecer as questões
   final repositorio = RepositorioQuestoes();
+
   // indica qual o texto da alternativa selecionada
   String _alternativaSelecionada = "";
+
   // utiliza a enum para indicar qual o status atual do quiz
   StatusQuiz _status = StatusQuiz.AGUARDAR;
+
   // indica se o usuario respondeu
   bool _respondeu = false;
+
   // controla a questão atual
   int _indiceQuestaoAtual = 0;
 
   int get indiceQuestaoAtual => _indiceQuestaoAtual + 1;
+
   Questao get questaoAtual => repositorio.listar()[_indiceQuestaoAtual];
+
   int get quantidadeTotalQuestoes => repositorio.listar().length;
+
   StatusQuiz get status => _status;
 
   String get alternativaSelecionada => _alternativaSelecionada;
+
   bool get selecionouAlternativa => _status == StatusQuiz.RESPONDER;
+
   bool get respondeuPergunta => _respondeu;
+
   bool get acertouResposta =>
       (questaoAtual.alternativaCorreta == _alternativaSelecionada);
 
   bool get acabou => _status == StatusQuiz.FINALIZAR;
+
   bool get verResultados => _status == StatusQuiz.RESULTADOS;
 
   void selecionarAlternativa(String alternativa) {
+    if (_respondeu) return;
     _alternativaSelecionada = alternativa;
     _status = StatusQuiz.RESPONDER;
   }
